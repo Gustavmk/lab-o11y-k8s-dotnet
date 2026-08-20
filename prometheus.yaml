@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: prometheus
+  namespace: monitoring
+spec:
+  enableRemoteWriteReceiver: true
+  enableFeatures:
+    - remote-write-receiver
+  evaluationInterval: 30s
+  imagePullPolicy: IfNotPresent
+  nodeSelector:
+    kubernetes.io/os: linux
+  retention: 10d
+  scrapeInterval: 30s
+  replicas: 1
+  #podAntiAffinity: "hard"
+  externalLabels:
+    cluster: "local"

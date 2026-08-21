@@ -46,7 +46,8 @@ spec:
         kubernetes.io/os: linux
       containers:
         - name: azure-vote-app
-          image: ghcr.io/rahulrai-in/azure-voting-app-dotnet:latest
+          image: azure-vote-app-dotnet:local
+          imagePullPolicy: Never
           ports:
             - containerPort: 80
           resources:
@@ -57,16 +58,14 @@ spec:
               memory: "100Mi"
               cpu: "500m" # same as 0.5
           env:
+            - name: ASPNETCORE_HTTP_PORTS 
+              value: "80"
             - name: "OTEL_SERVICE_NAME"
               value: "azure-vote-app"
             - name: ASPNETCORE_ENVIRONMENT 
               value: "Production"
             - name: ConnectionStrings__RedisHost
               value: "azure-vote-redis"
-            #- name: ConnectionStrings__OTLPMetricsExporterEndpoint
-            #  value: "http://trace-collector-collector.monitoring.svc.cluster.local:4318/v1/metrics"
-            #- name: ConnectionStrings__OTLPTracesExporterEndpoint
-            #  value: "http://trace-collector-collector.monitoring.svc.cluster.local:4318/v1/traces"
 ---
 apiVersion: v1
 kind: Service

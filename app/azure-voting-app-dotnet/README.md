@@ -2,7 +2,7 @@
 
 This sample is the .NET implementation of the [official Azure Voting App](https://github.com/Azure-Samples/azure-voting-app-redis). This sample creates a multi-container application in a Kubernetes cluster like the original one.
 
-The application interface is built using ASP.NET Core Blazor Server. The data component uses Redis.
+The application interface is built using ASP.NET Core Blazor Server, targeting **.NET 10**. The data component uses Redis.
 
 This sample also includes the following features:
 
@@ -19,6 +19,26 @@ This sample also includes the following features:
 ```bash
 docker-compose --profile local-collector up
 ```
+
+## Build and load into a local Kind cluster
+
+Use [build-and-load.sh](build-and-load.sh) to build the Docker image and load it directly into a local [Kind](https://kind.sigs.k8s.io/) cluster, without needing to push to a registry:
+
+```bash
+./build-and-load.sh
+```
+
+Environment variables to customize the script:
+
+| Variable          | Default                  | Description                                    |
+| ----------------- | ------------------------- | ----------------------------------------------- |
+| `IMAGE_NAME`       | `azure-vote-app-dotnet`   | Name of the built image                         |
+| `IMAGE_TAG`        | `local`                   | Tag of the built image                          |
+| `KIND_CLUSTER`     | `kind`                    | Name of the target Kind cluster                 |
+| `DEPLOYMENT_NAME`  | `azure-vote-app`          | Deployment to restart after loading the image    |
+| `NAMESPACE`        | *(current context)*       | Namespace of the deployment                     |
+
+After the first load, point the `azure-vote-app` Deployment's container image at `azure-vote-app-dotnet:local` with `imagePullPolicy: IfNotPresent` (see [../../manifestos/dotnet-app.yaml](../../manifestos/dotnet-app.yaml)) so Kubernetes uses the image loaded into Kind instead of pulling from a registry.
 
 ## Demo
 

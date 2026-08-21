@@ -8,7 +8,7 @@ helm upgrade --install kube-prometheus-stack \
     -n kube-prometheus-stack oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack \
     --version 88.5.2 \
     --create-namespace \
-    --values kube-prometheus-stack.yaml    
+    --values helm/values-kube-prometheus-stack.yaml    
 ```
 
 2. OpenTelemetry Operator
@@ -43,7 +43,7 @@ helm install opentelemetry-operator open-telemetry/opentelemetry-operator \
     --namespace opentelemetry-operator-system \
     --create-namespace \
     --version $OTEL_VERSION \
-    --values=otel-operator.yaml
+    --values helm/values-otel-operator.yaml
 ```
 
 3. tracing data store (tempo)
@@ -60,7 +60,7 @@ helm install tempo grafana/tempo \
     --create-namespace \
     --namespace grafana \
     --version $TEMPO_VERSION \
-    --values tempo.yaml
+    --values helm/values-tempo.yaml
 ```
 
 4. Grafana
@@ -74,9 +74,13 @@ GRAFANA_VERSION=10.5.15
 helm install grafana grafana/grafana \
   --namespace grafana \
   --version $GRAFANA_VERSION \
-  --values grafana.yaml
+  --values helm/values-grafana.yaml
 ```
 
 5. Deploy manifests
 
 `kubectl apply -f manifestos/`
+
+6.  Build + Deploy App Dotnet
+`app/azure-voting-app-dotnet/build-and-load.sh`
+`k apply -f app/azure-voting-app-dotnet/kubernetes-manifests      `

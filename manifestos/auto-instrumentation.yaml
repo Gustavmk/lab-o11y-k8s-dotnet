@@ -4,7 +4,7 @@ metadata:
   name: app-instrumentation
 spec:
   exporter:
-    endpoint: http://trace-collector-collector.monitoring.svc.cluster.local:4318
+    endpoint: http://trace-collector-collector.monitoring.svc.cluster.local:4317
   propagators:
     - tracecontext
     - baggage
@@ -13,7 +13,7 @@ spec:
     argument: '1'
   dotnet:
     env:
-      - name: OTEL_EXPORTER_OTLP_TRACES_PROTOCOL
+      - name: OTEL_EXPORTER_OTLP_PROTOCOL
         value: "grpc"
       - name: OTEL_LOG_LEVEL
         value: "error"

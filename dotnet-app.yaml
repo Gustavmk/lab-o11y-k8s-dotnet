@@ -1,0 +1,114 @@
+# Voting App https://github.com/rahulrai-in/azure-voting-app-dotnet
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: azure-vote-app
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+  selector:
+    app: azure-vote-app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: azure-vote-redis
+spec:
+  ports:
+    - port: 6379
+  selector:
+    app: azure-vote-redis
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: azure-vote-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: azure-vote-app
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: azure-vote-app
+      annotations:
+        instrumentation.opentelemetry.io/inject-dotnet: "false"
+    spec:
+      nodeSelector:
+        kubernetes.io/os: linux
+      containers:
+        - name: azure-vote-app
+          image: ghcr.io/rahulrai-in/azure-voting-app-dotnet:latest
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: "60Mi"
+              cpu: "250m" # same as 0.25
+            limits:
+              memory: "100Mi"
+              cpu: "500m" # same as 0.5
+          env:
+            - name: ConnectionStrings__RedisHost
+              value: "azure-vote-redis"
+            # - name: "OTEL_DOTNET_AUTO_TRACES_INSTRUMENTATION_ENABLED"
+            #   value: "true"
+            - name: ConnectionStrings__OTLPMetricsExporterEndpoint
+              value: "http://tempo.grafana.svc.cluster.local:4318/v1/metrics"
+            - name: ConnectionStrings__OTLPTracesExporterEndpoint
+              value: "http://tempo.grafana.svc.cluster.local:4318/v1/traces"
+            # - name: EnableOtlpExporter
+            #   value: "true"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: azure-vote-app
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+  selector:
+    app: azure-vote-app
+---
+# REDIS
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: azure-vote-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: azure-vote-redis
+  template:
+    metadata:
+      labels:
+        app: azure-vote-redis
+    spec:
+      nodeSelector:
+        kubernetes.io/os: linux
+      containers:
+        - name: azure-vote-redis
+          image: redis:latest
+          env:
+            - name: ALLOW_EMPTY_PASSWORD
+              value: "yes"
+          ports:
+            - containerPort: 6379
+              name: redis
+          resources:
+            requests:
+              memory: "60Mi"
+              cpu: "250m" # same as 0.25
+            limits:
+              memory: "100Mi"
+              cpu: "500m" # same as 0.5

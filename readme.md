@@ -4,7 +4,7 @@
 
 ```bash
 helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm install kube-prometheus-stack \
+helm upgrade --install kube-prometheus-stack \
     -n kube-prometheus-stack oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack \
     --version 88.5.2 \
     --create-namespace \
@@ -67,3 +67,35 @@ kubectl apply -n monitoring -f collector-tracing.yaml
 #TODO: deploy grafana
 #TODO: app para testar 
 # https://github.com/marcel-dempers/docker-development-youtube-series/blob/master/monitoring/opentelemetry/kubernetes/README.md
+
+
+4. tracing data store (tempo)
+
+```bash
+helm repo add grafana https://grafana.github.io/helm-charts
+helm repo update
+
+helm search repo  grafana/tempo > tempo-version.txt
+
+TEMPO_VERSION=1.24.4
+
+helm install tempo grafana/tempo \
+    --create-namespace \
+    --namespace grafana \
+    --version $TEMPO_VERSION \
+    --values tempo.yaml
+```
+
+5. Grafana
+
+
+```bash
+helm search repo grafana/grafana  > grafana-repo.txt
+
+GRAFANA_VERSION=10.5.15
+
+helm install grafana grafana/grafana \
+  --namespace grafana \
+  --version $GRAFANA_VERSION \
+  --values grafana.yaml
+```

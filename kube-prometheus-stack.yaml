@@ -1,27 +1,28 @@
 ## Using default values from https://github.com/grafana-community/helm-charts/blob/main/charts/grafana/values.yaml
-##
 grafana:
-  enabled: true
-
-
-## Configuration for alertmanager
-## ref: https://prometheus.io/docs/alerting/alertmanager/
-##
-alertmanager:
-
-  ## Deploy alertmanager
-  ##
   enabled: false
 
-
+## Deploy alertmanager
+## Configuration for alertmanager
+## ref: https://prometheus.io/docs/alerting/alertmanager/
+alertmanager:
+  enabled: false
 
 ## Deploy a Prometheus instance
-##
 prometheus:
-  enabled: true
-
+  enabled: false
 
 ## Manages Prometheus and Alertmanager components
-##
 prometheusOperator:
   enabled: true
+  nodeSelector: 
+    "kubernetes.io/os": linux
+  fullnameOverride: "prometheus-operator"
+  manageCrds: true
+
+prometheus-node-exporter:
+  enabled: false
+nodeExporter:
+  enabled: false
+kubeStateMetrics:
+  enabled: false

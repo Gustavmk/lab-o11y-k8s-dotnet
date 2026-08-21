@@ -22,14 +22,15 @@ spec:
         timeout: 10s
 
     exporters:
-      # NOTE: Prior to v0.86.0 use `logging` instead of `debug`.
+
       debug: {}
+      
       otlp/tempo:
         endpoint: "http://tempo.grafana.svc.cluster.local:4317"
         tls:
           insecure: true
       prometheusremotewrite:
-        endpoint: "http://prometheus-operated:9090/api/v1/write"
+        endpoint: "http://prometheus-operated.monitoring.svc.cluster.local:9090/api/v1/write"
         tls:
           insecure: true
           insecure_skip_verify: true

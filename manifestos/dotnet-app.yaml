@@ -40,7 +40,7 @@ spec:
       labels:
         app: azure-vote-app
       annotations:
-        instrumentation.opentelemetry.io/inject-dotnet: "false"
+        instrumentation.opentelemetry.io/inject-dotnet: "true"
     spec:
       nodeSelector:
         kubernetes.io/os: linux
@@ -57,16 +57,16 @@ spec:
               memory: "100Mi"
               cpu: "500m" # same as 0.5
           env:
+            - name: "OTEL_SERVICE_NAME"
+              value: "azure-vote-app"
+            - name: ASPNETCORE_ENVIRONMENT 
+              value: "Production"
             - name: ConnectionStrings__RedisHost
               value: "azure-vote-redis"
-            # - name: "OTEL_DOTNET_AUTO_TRACES_INSTRUMENTATION_ENABLED"
-            #   value: "true"
-            - name: ConnectionStrings__OTLPMetricsExporterEndpoint
-              value: "http://tempo.grafana.svc.cluster.local:4318/v1/metrics"
-            - name: ConnectionStrings__OTLPTracesExporterEndpoint
-              value: "http://tempo.grafana.svc.cluster.local:4318/v1/traces"
-            # - name: EnableOtlpExporter
-            #   value: "true"
+            #- name: ConnectionStrings__OTLPMetricsExporterEndpoint
+            #  value: "http://trace-collector-collector.monitoring.svc.cluster.local:4318/v1/metrics"
+            #- name: ConnectionStrings__OTLPTracesExporterEndpoint
+            #  value: "http://trace-collector-collector.monitoring.svc.cluster.local:4318/v1/traces"
 ---
 apiVersion: v1
 kind: Service

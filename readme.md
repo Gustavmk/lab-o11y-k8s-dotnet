@@ -11,14 +11,7 @@ helm upgrade --install kube-prometheus-stack \
     --values kube-prometheus-stack.yaml    
 ```
 
-2. Apply Prometheus
-
-```bash
-kubectl create namespace monitoring
-kubectl apply -f prometheus.yaml
-```
-
-3. OpenTelemetry Operator
+2. OpenTelemetry Operator
 
 ```bash
 helm repo add open-telemetry https://open-telemetry.github.io/opentelemetry-helm-charts
@@ -27,21 +20,16 @@ helm repo update
 helm search repo open-telemetry --versions > otel-repo.txt
 
 OTEL_VERSION=0.121.0 
-```
 
-3.2 Certmanager
 
-```bash
+## CERT MANAGER
 helm repo add jetstack https://charts.jetstack.io
 
 helm search repo jetstack --versions | head
 
 CERTMANAGER_VERSION=v1.21.1
-```
 
-3.3 install charts
-
-```bash
+## install charts
 helm install \
     cert-manager jetstack/cert-manager \
     --namespace cert-manager \
@@ -58,18 +46,7 @@ helm install opentelemetry-operator open-telemetry/opentelemetry-operator \
     --values=otel-operator.yaml
 ```
 
-3.4 Apply Collector
-
-kubectl apply -n monitoring -f collector-tracing.yaml
-
-
-#TODO: deploy do auto instrumentation
-#TODO: deploy grafana
-#TODO: app para testar 
-# https://github.com/marcel-dempers/docker-development-youtube-series/blob/master/monitoring/opentelemetry/kubernetes/README.md
-
-
-4. tracing data store (tempo)
+3. tracing data store (tempo)
 
 ```bash
 helm repo add grafana https://grafana.github.io/helm-charts
@@ -86,7 +63,7 @@ helm install tempo grafana/tempo \
     --values tempo.yaml
 ```
 
-5. Grafana
+4. Grafana
 
 
 ```bash
@@ -99,3 +76,7 @@ helm install grafana grafana/grafana \
   --version $GRAFANA_VERSION \
   --values grafana.yaml
 ```
+
+5. Deploy manifests
+
+`kubectl apply -f manifestos/`

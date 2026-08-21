@@ -7,11 +7,15 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/AzureVote.csproj",
+                "${workspaceFolder}/app/azure-voting-app-dotnet/azure-vote/azure-vote/AzureVote.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$msCompile",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         },
         {
             "label": "publish",
@@ -19,23 +23,33 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/AzureVote.csproj",
+                "${workspaceFolder}/app/azure-voting-app-dotnet/azure-vote/azure-vote/AzureVote.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "watch",
+            "label": "dev",
+            "detail": "Run the app locally with hot reload (dotnet watch)",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/AzureVote.csproj"
+                "${workspaceFolder}/app/azure-voting-app-dotnet/azure-vote/azure-vote/AzureVote.csproj"
             ],
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$msCompile",
+            "isBackground": true
+        },
+        {
+            "label": "docker: build & load image into Kind",
+            "detail": "Builds the azure-vote-app-dotnet image and loads it into the local Kind cluster",
+            "type": "shell",
+            "command": "${workspaceFolder}/app/azure-voting-app-dotnet/build-and-load.sh",
+            "problemMatcher": [],
+            "group": "build"
         }
     ]
 }

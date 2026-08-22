@@ -73,10 +73,10 @@ spec:
             - containerPort: 80
           resources:
             requests:
-              memory: "60Mi"
+              memory: "128Mi"
               cpu: "250m" # same as 0.25
             limits:
-              memory: "100Mi"
+              memory: "256Mi"
               cpu: "500m" # same as 0.5
           env:
             - name: ASPNETCORE_HTTP_PORTS 

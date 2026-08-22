@@ -79,7 +79,7 @@ helm search repo  grafana/tempo > tempo-version.txt
 
 TEMPO_VERSION=1.24.4
 
-helm install tempo grafana/tempo \
+helm upgrade --install tempo grafana/tempo \
     --create-namespace \
     --namespace grafana \
     --version $TEMPO_VERSION \

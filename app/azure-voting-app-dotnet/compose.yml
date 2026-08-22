@@ -1,0 +1,16 @@
+services:
+  azure-vote-app:
+    build:
+      context: ./azure-vote
+      dockerfile: Dockerfile
+    ports:
+      - "8085:80"
+    environment:
+      - ConnectionStrings__RedisHost=azure-vote-redis:6379
+    depends_on:
+      - azure-vote-redis
+
+  azure-vote-redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"

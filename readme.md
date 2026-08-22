@@ -1,3 +1,26 @@
+# Reqs
+
+1. Criação do cluster
+    kind create cluster
+
+2. Setup Gateway API 
+
+doc: https://kubernetes.io/blog/2026/01/28/experimenting-gateway-api-with-kind/
+
+```bash
+VERSION="$(basename $(curl -s -L -o /dev/null -w '%{url_effective}' https://github.com/kubernetes-sigs/cloud-provider-kind/releases/latest))"
+docker run -d --name cloud-provider-kind --rm --network host -v /var/run/docker.sock:/var/run/docker.sock registry.k8s.io/cloud-provider-kind/cloud-controller-manager:${VERSION}
+
+
+# Verifique se está em execução
+docker ps --filter name=cloud-provider-kind
+
+# Get logs
+docker logs cloud-provider-kind
+```
+
+
+
 # Setup
 
 1. kube-prometheus-operator
@@ -71,7 +94,7 @@ helm search repo grafana/grafana  > grafana-repo.txt
 
 GRAFANA_VERSION=10.5.15
 
-helm install grafana grafana/grafana \
+helm upgrade --install grafana grafana/grafana \
   --namespace grafana \
   --version $GRAFANA_VERSION \
   --values helm/values-grafana.yaml
@@ -84,3 +107,13 @@ helm install grafana grafana/grafana \
 6.  Build + Deploy App Dotnet
 `app/azure-voting-app-dotnet/build-and-load.sh`
 `k apply -f app/azure-voting-app-dotnet/kubernetes-manifests      `
+
+
+## TODO: fale sobre inject de hosts para acessar os apps
+
+file: hosts
+127.0.0.1 grafana.kubernetes.docker.internal
+127.0.0.1 vote-app.kubernetes.docker.internal
+
+
+curl -I -v http://grafana.kubernetes.docker.internal:8080/ 

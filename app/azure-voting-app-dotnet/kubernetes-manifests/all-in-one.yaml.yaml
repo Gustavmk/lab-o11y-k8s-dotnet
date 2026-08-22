@@ -1,9 +1,28 @@
 # Voting App https://github.com/rahulrai-in/azure-voting-app-dotnet
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: azure-vote-app
+  namespace: default
+spec:
+  parentRefs:
+  - name: gateway
+    namespace: gateway-api-resources
+  hostnames: ["vote-app.kubernetes.docker.internal"]
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: azure-vote-app
+      port: 80
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: azure-vote-app
+  namespace: default
 spec:
   type: ClusterIP
   ports:
@@ -15,6 +34,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: azure-vote-redis
+  namespace: default
 spec:
   ports:
     - port: 6379
@@ -25,6 +45,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: azure-vote-app
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -71,6 +92,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: azure-vote-app
+  namespace: default
 spec:
   type: ClusterIP
   ports:
@@ -83,6 +105,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: azure-vote-redis
+  namespace: default
 spec:
   replicas: 1
   selector:

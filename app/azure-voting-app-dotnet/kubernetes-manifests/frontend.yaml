@@ -1,0 +1,60 @@
+# Voting App https://github.com/rahulrai-in/azure-voting-app-dotnet
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: azure-vote-app
+  namespace: default
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+  selector:
+    app: azure-vote-app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: azure-vote-app
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: azure-vote-app
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: azure-vote-app
+      annotations:
+        instrumentation.opentelemetry.io/inject-dotnet: "true"
+    spec:
+      nodeSelector:
+        kubernetes.io/os: linux
+      containers:
+        - name: azure-vote-app
+          image: azure-vote-app-dotnet:local
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m" # same as 0.25
+            limits:
+              memory: "256Mi"
+              cpu: "500m" # same as 0.5
+          env:
+            - name: ASPNETCORE_HTTP_PORTS 
+              value: "80"
+            - name: "OTEL_SERVICE_NAME"
+              value: "azure-vote-app"
+            - name: ASPNETCORE_ENVIRONMENT 
+              value: "Production"
+            - name: ConnectionStrings__RedisHost
+              value: "azure-vote-redis"

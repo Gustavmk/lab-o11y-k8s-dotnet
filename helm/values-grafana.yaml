@@ -1,18 +1,18 @@
-route:
-  main:
-    enabled: true
-    apiVersion: gateway.networking.k8s.io/v1
-    kind: HTTPRoute
-    hostnames:
-      - "grafana.kubernetes.docker.internal"
-    parentRefs:
-      - name: gateway
-        namespace: gateway-api-resources
-        sectionName: default
-    matches:
-      - path:
-          type: PathPrefix
-          value: /
+# route:
+#   main:
+#     enabled: true
+#     apiVersion: gateway.networking.k8s.io/v1
+#     kind: HTTPRoute
+#     hostnames:
+#       - "grafana.kubernetes.docker.internal"
+#     parentRefs:
+#       - name: gateway
+#         namespace: gateway-api-resources
+#         sectionName: default
+#     matches:
+#       - path:
+#           type: PathPrefix
+#           value: /
 
 datasources:
   datasources.yaml:

@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: azure-vote-redis
+  namespace: default
+spec:
+  ports:
+    - port: 6379
+  selector:
+    app: azure-vote-redis
+---
+# REDIS
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: azure-vote-redis
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: azure-vote-redis
+  template:
+    metadata:
+      labels:
+        app: azure-vote-redis
+    spec:
+      nodeSelector:
+        kubernetes.io/os: linux
+      containers:
+        - name: azure-vote-redis
+          image: redis:latest
+          env:
+            - name: ALLOW_EMPTY_PASSWORD
+              value: "yes"
+          ports:
+            - containerPort: 6379
+              name: redis
+          resources:
+            requests:
+              memory: "60Mi"
+              cpu: "250m" # same as 0.25
+            limits:
+              memory: "100Mi"
+              cpu: "500m" # same as 0.5

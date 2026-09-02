@@ -4,7 +4,7 @@ metadata:
   name: app-instrumentation
 spec:
   exporter:
-    endpoint: http://trace-collector-collector.monitoring.svc.cluster.local:4317
+    endpoint: http://default-collector.monitoring.svc.cluster.local:4317
   propagators:
     - tracecontext
     - baggage

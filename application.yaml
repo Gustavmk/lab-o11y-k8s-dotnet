@@ -23,7 +23,7 @@ spec:
       helm:
         valueFiles:
           - $values/helm/values-kube-prometheus-stack.yaml
-    - repoURL: 'ssh://git@github.com:gustavomkunolinx/labs.git'
+    - repoURL: git@github.com:gustavomkunolinx/labs
       targetRevision: main
       ref: values
   destination:

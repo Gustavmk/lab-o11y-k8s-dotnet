@@ -182,7 +182,7 @@ spec:
     syncOptions:
       - CreateNamespace=true
 ---
-# Azure Vote App (.NET 10 Blazor) + Redis
+# Azure Vote App (.NET 10 Blazor) + Redis + K8S AUTO INSTRUMENTATION
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:

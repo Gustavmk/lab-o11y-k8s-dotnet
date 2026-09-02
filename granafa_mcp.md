@@ -3,7 +3,7 @@
 1. Criando conta de serviço
 
 GRAFANA_PASS=$(kubectl get secret --namespace grafana grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo)
-
+echo $GRAFANA_PASS
 GRAFANA_URL='grafana.kubernetes.docker.internal:8080'
 
 curl -X POST -H "Content-Type: application/json" \
@@ -15,3 +15,4 @@ curl -X POST -H "Content-Type: application/json" \
 curl -X POST -H "Content-Type: application/json" \
   -d '{"name":"meu-token-api"}' \
   http://admin:$GRAFANA_PASS@$GRAFANA_URL/api/serviceaccounts/3/tokens
+

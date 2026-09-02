@@ -1,0 +1,25 @@
+redis-ha:
+  enabled: false
+
+controller:
+  replicas: 1
+
+repoServer:
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+
+applicationSet:
+  replicas: 1
+
+global:
+  domain: argocd.kubernetes.docker.internal
+
+configs:
+  params:
+    server.insecure: true
+
+server:
+  autoscaling:
+    enabled: false
+    minReplicas: 1

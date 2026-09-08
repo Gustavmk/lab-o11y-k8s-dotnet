@@ -44,7 +44,7 @@ docker   # https://docs.docker.com/engine/install/
 ### 1. Criar o cluster Kind
 
 ```bash
-kind create cluster --config=kind/config.yaml
+kind create cluster --name dev --config=kind/config.yaml
 ```
 
 ### 3. Argocd

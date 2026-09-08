@@ -205,3 +205,48 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+---
+# Dotnet Boilerplate 
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: dotnet-boilerplate
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+spec:
+  project: default
+  source:
+    repoURL: https://drylabs.dev/helm-charts
+    chart: dotnet-boilerplate-api
+    targetRevision: 1.0.2
+    helm:
+      values: |
+          postgresql:
+            enabled: true
+            auth:
+              username: app_user
+              database: HeroDb
+              password: "s3cr3t"
+
+          secret:
+            create: true
+            stringData:
+              ConnectionStrings__DefaultConnection: "Host=dotnet-boilerplate-dotnet-boilerplate-api-postgresql.default.svc.cluster.local;Port=5432;Database=HeroDb;Username=app_user;Password=s3cr3t"
+
+          env:
+            - name: OTEL_LOG_LEVEL
+              value: "error"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://default-collector.monitoring.svc.cluster.local:4317"
+            - name: OTEL_SERVICE_NAME
+              value: "dotnet-boilerplate-api"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

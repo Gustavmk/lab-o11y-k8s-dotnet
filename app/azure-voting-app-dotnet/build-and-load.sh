@@ -5,7 +5,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 IMAGE_NAME="${IMAGE_NAME:-azure-vote-app-dotnet}"
 IMAGE_TAG="${IMAGE_TAG:-local}"
-KIND_CLUSTER="${KIND_CLUSTER:-kind}"
+KIND_CLUSTER="${KIND_CLUSTER:-dev}"
 DEPLOYMENT_NAME="${DEPLOYMENT_NAME:-azure-vote-app}"
 NAMESPACE="${NAMESPACE:-}"
 

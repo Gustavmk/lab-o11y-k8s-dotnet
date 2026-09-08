@@ -235,6 +235,10 @@ spec:
               ConnectionStrings__DefaultConnection: "Host=dotnet-boilerplate-dotnet-boilerplate-api-postgresql.default.svc.cluster.local;Port=5432;Database=HeroDb;Username=app_user;Password=s3cr3t"
 
           env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Production"
+            - name: ASPNETCORE_URLS
+              value: "http://+:9090"
             - name: OTEL_LOG_LEVEL
               value: "error"
             - name: OTEL_EXPORTER_OTLP_ENDPOINT

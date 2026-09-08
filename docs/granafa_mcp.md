@@ -17,7 +17,7 @@ Na primeira ativação, o VS Code solicita um **Service Account Token** do Grafa
 
 1. Criando conta de serviço
 
-GRAFANA_PASS=$(kubectl get secret --namespace grafana grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo)
+GRAFANA_PASS=$(kubectl get secret --namespace grafana grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo) 
 echo $GRAFANA_PASS
 GRAFANA_URL='grafana.kubernetes.docker.internal:8080'
 

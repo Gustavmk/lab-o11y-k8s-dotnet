@@ -34,3 +34,12 @@ datasources:
         httpMethod: GET
         serviceMap:
           datasourceUid: 'Prometheus'
+
+
+persistence:
+  type: pvc
+  enabled: true
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  size: 10Gi

@@ -38,7 +38,7 @@ datasources:
 
 persistence:
   type: pvc
-  enabled: true
+  enabled: false
   storageClassName: standard
   accessModes:
     - ReadWriteOnce

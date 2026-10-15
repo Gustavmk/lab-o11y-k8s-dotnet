@@ -219,7 +219,7 @@ spec:
   source:
     repoURL: https://drylabs.dev/helm-charts
     chart: dotnet-boilerplate-api
-    targetRevision: 1.0.2
+    targetRevision: 1.0.5
     helm:
       values: |
           postgresql:
